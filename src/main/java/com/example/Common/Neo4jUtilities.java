@@ -11,12 +11,15 @@ public class Neo4jUtilities {
         Driver driver =  createDriver();
         Session session = driver.session();
         StatementResult result = session.run("match(n) return n;");
-        for (String s:result.keys())
-            System.out.println(s);
-        while(result.hasNext()){
-            Record record = result.next();
-            System.out.println(record.get("n").get("name"));
-        }
+        System.out.println(result.toString());
+        System.out.println();
+//        for (Record r : result.list()){
+//            System.out.println(r);
+//        }
+//        while(result.hasNext()){
+//            Record record = result.next();
+//            System.out.println(record.get("n").get("name"));
+//        }
         session.close();
         driver.close();
     }
