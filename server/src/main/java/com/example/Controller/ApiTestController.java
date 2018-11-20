@@ -2,19 +2,17 @@ package com.example.Controller;
 
 import com.example.Model.RespEntity;
 import com.example.Model.TestEndPoint;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
@@ -73,5 +71,24 @@ public class ApiTestController {
             }
         }
         return respString;
+    }
+
+    @PostMapping("/upload")
+    @ResponseBody
+    public RespEntity upload(@RequestParam("file") MultipartFile file) {
+        System.out.println("-------get a new File--------");
+        if (file.isEmpty()) {
+            return new RespEntity(RespEntity.RespCode.SUCCESS, "上传失败, 请重新选择文件");
+        }
+
+        String fileName = file.getOriginalFilename();
+        String filePath = "/Users/bing/Desktop/github repo/CriminalMiner/tmp/";
+        File dest = new File(filePath + fileName);
+        try {
+            file.transferTo(dest);
+            return new RespEntity(RespEntity.RespCode.SUCCESS, "上传成功");
+        } catch (IOException e) {
+            return new RespEntity(RespEntity.RespCode.SUCCESS, "上传失败:\n" + e.getMessage());
+        }
     }
 }
