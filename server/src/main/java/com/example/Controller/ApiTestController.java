@@ -38,6 +38,7 @@ public class ApiTestController {
         return new RespEntity(RespEntity.RespCode.SUCCESS, test);
     }
 
+    // 返回整个图数据库
     @RequestMapping(value = "find_all", method = RequestMethod.GET)
     @ResponseBody
     public String FindAll(){
@@ -73,10 +74,10 @@ public class ApiTestController {
         return respString;
     }
 
+    // 上传文件 用于导入数据
     @PostMapping("/upload")
     @ResponseBody
     public RespEntity upload(@RequestParam("file") MultipartFile file) {
-        System.out.println("-------get a new File--------");
         if (file.isEmpty()) {
             return new RespEntity(RespEntity.RespCode.SUCCESS, "上传失败, 请重新选择文件");
         }
