@@ -43,7 +43,7 @@ public class RespEntity {
 
         SUCCESS(0, "请求成功"),
         WARN(-1, "网络异常，请稍后重试"),
-        BAD_REQUEST(1,"未找到相应数据");
+        BAD_REQUEST(500,"未找到相应数据");
 
         private int code;
         private String msg;

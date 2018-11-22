@@ -16,7 +16,7 @@ public class CriminalMinerApplication {
 		PersonService service = new PersonService();
 		try {
 			service.findPersonByName("xx");
-			System.out.println("Neo4j数据库驱动运行完成");
+			System.out.println("Neo4j数据库驱动加载完成");
 		} catch (BaseException e) {
 
 		}

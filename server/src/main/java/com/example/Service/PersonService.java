@@ -14,7 +14,7 @@ public class PersonService {
 
     public Person findPersonByName(String name) throws BaseException{
         Session session = DatabaseService.driver.session();
-        StatementResult result = session.run("match(n) where n.name={name} return n;", parameters("name",name));
+        StatementResult result = session.run("match(n) where n.name={name} return n,labels(n);", parameters("name",name));
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
 
 
@@ -23,7 +23,13 @@ public class PersonService {
         Person person = new Person();
         while (result.hasNext()) {
             count++;
-            Value value = result.next().get("n");
+            Record record = result.next();
+            Value value = record.get("n");
+            String labels = "";
+            for (Value l: record.get("labels(n)").values()){
+                labels =  labels + l.asString()+",";
+            }
+            person.setLabel(labels);
             person.setOccupation(value.get("职业").asString());
             person.setPlaceOfResidence(value.get("户籍所在地").asString());
             person.setNationality(value.get("民族").asString());
@@ -38,6 +44,7 @@ public class PersonService {
             person.setCurrentAddress(value.get("现住址").asString());
             person.setGender(value.get("性别").asString());
             person.setPlaceOfBirth(value.get("出生地").asString());
+            person.setNumberOfDrugs(value.get("毒品数量").asString());
         }
 
         if(count==0)
@@ -55,5 +62,16 @@ public class PersonService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addPerson(Person person) {
+        Session session = DatabaseService.driver.session();
+        session.run("create a:{label} {name:{name},毒品数量:{numOfDrugs},职业:{job},户籍所在地:{placeOfResidence}," +
+                "民族:{nationality},文化程度:{education},出生日期:{dateOfBirth},案件号:{caseNumber},现住址:{curAdd}," +
+                "性别:{gender},出生地:{placeOfBirth} }",
+                parameters("label",person.getLabel(),"name",person.getName(),"numOfDrugs", person.getNumberOfDrugs(),
+                        "job",person.getOccupation(),"placeOfResidence",person.getPlaceOfResidence(), "nationality", person.getNationality(),
+                        "education",person.getEducationLevel(),"dateOfBirth",person.getDateOfBirth(), "caseNumber",person.getCaseNumber(),
+                        "curAdd",person.getCurrentAddress(),"gender",person.getGender(),"placeOfBirth",person.getPlaceOfBirth()));
     }
 }

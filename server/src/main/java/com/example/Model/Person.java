@@ -4,7 +4,8 @@ import java.util.Date;
 
 public class Person {
 
-    private String numberOfDrugs, occupation, placeOfResidence, nationality, educationLevel, caseNumber, name, placeOfBirth, currentAddress, gender;
+    private String numberOfDrugs, occupation, placeOfResidence,
+            nationality, educationLevel, caseNumber, name, placeOfBirth, currentAddress, gender, label;
     private Date dateOfBirth;
 
     public String getNumberOfDrugs() {
@@ -93,7 +94,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return numberOfDrugs+" "+occupation+" "+placeOfResidence+" "+nationality+" "+educationLevel
+        return label+" "+numberOfDrugs+" "+occupation+" "+placeOfResidence+" "+nationality+" "+educationLevel
                 +" "+caseNumber+" "+name+" "+placeOfBirth+" "+currentAddress+" "+gender;
     }
 
@@ -101,4 +102,11 @@ public class Person {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 }
